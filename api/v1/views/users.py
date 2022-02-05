@@ -7,6 +7,7 @@ from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models.user import User
 
+
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 def list_users():
     """ Retrieves a list of all State object"""
@@ -17,6 +18,7 @@ def list_users():
 
     return jsonify(users_all)
 
+
 @app_views.route('/users/<user_id>',  methods=['GET'], strict_slashes=False)
 def user_get(user_id):
     """ Handles GET method """
@@ -25,6 +27,7 @@ def user_get(user_id):
         abort(404)
     user = user.to_dict()
     return jsonify(user)
+
 
 @app_views.route('/users/<user_id>', methods=['DELETE'],
                  strict_slashes=False)
@@ -38,6 +41,7 @@ def delete_user(user_id=None):
         storage.save()
         return jsonify({}), 200
 
+
 @app_views.route('/user', methods=['POST'], strict_slashes=False)
 def user_post():
     """Create post"""
@@ -47,12 +51,13 @@ def user_post():
     elif 'email' not in data.keys():
         abort(400, "Missing email")
     elif 'password' not in data.keys():
-        abort(400, "Missing password")    
+        abort(400, "Missing password")
     else:
         new_user = User(**data)
         storage.new(new_user)
         new_user.save()
-        return jsonify(new_user.to_dict()), 201        
+        return jsonify(new_user.to_dict()), 201
+
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def user_put(user_id):
@@ -70,4 +75,3 @@ def user_put(user_id):
     user.save()
     user = user.to_json()
     return jsonify(user), 200
-    
