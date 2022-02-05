@@ -7,6 +7,8 @@ from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models.place import Place
 
+PLACE_IGNORE_KEYS = {'id', 'user_id', 'city_id', 'created_at', 'updated_at'}
+
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
