@@ -8,15 +8,16 @@ from api.v1.views import app_views
 from models.state import State
 
 
-@app_views.route('/states',methods=['GET'], strict_slashes=False)
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def list_states():
     """ Retrieves a list of all State object"""
     states_all = []
     states = storage.all("States").values()
     for state in states:
         states_all.append(state.to_dict())
-    
+
     return jsonify(states_all)
+
 
 @app_views.route('/states/<state_id>',  methods=['GET'])
 def state_get(state_id):
@@ -26,6 +27,7 @@ def state_get(state_id):
         abort(404)
     state = state.to_json()
     return jsonify(state)
+
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id=None):
@@ -37,6 +39,7 @@ def delete_state(state_id=None):
         storage.delete(states)
         storage.save()
         return jsonify({}), 200
+
 
 @app_views.route('/states/<state_id>', methods=['POST'])
 def state_post():
@@ -50,6 +53,7 @@ def state_post():
     state.save()
     state = state.to_json()
     return jsonify(state), 201
+
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
 def state_put(state_id):
