@@ -18,7 +18,9 @@ def list_places():
 
     return jsonify(places_all)
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/cities/<city_id>/places', methods=['GET'],
+                 strict_slashes=False)
 def all_places(city_id):
     """ returns list of all Place objects linked to a given City """
     city = storage.get("City", city_id)
@@ -30,6 +32,7 @@ def all_places(city_id):
             places_all.append(place.to_dict())
     return jsonify(places_all)
 
+
 @app_views.route('/places/<places_id>',  methods=['GET'], strict_slashes=False)
 def places_get(places_id):
     """ Handles GET method """
@@ -38,6 +41,7 @@ def places_get(places_id):
         abort(404)
     place = place.to_dict()
     return jsonify(place)
+
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
@@ -61,6 +65,7 @@ def create_places(city_id):
     place.save()
     place = place.to_dict()
     return jsonify(place), 201
+
 
 @app_views.route('/places/<place_id>', methods=['PUT'])
 def place_put(place_id):
