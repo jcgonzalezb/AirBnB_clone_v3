@@ -43,34 +43,32 @@ def delete_city(amenity_id=None):
         return jsonify({}), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'],
+@app_views.route('/amenities', methods=['POST'],
                  strict_slashes=False)
-def create_city(state_id):
-    """ Creates a city. Handles POST method """
+def create_amenity():
+    """ Creates a amenity. Handles POST method """
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
     elif 'name' not in data:
         abort(400, "Missing name")
     else:
-        state = storage.get("State", state_id)
-        if state is None:
-            abort(404)
-        data['state_id'] = state_id
-        new_city = Amenity(**data)
-        new_city.save()
-        return jsonify(new_city.to_dict()), 201
+        new_amenity = Amenity(**data)
+        storage.new(new_amenity)
+        new_amenity.save()
+        return jsonify(new_amenity.to_dict()), 201
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def city_put(city_id=None):
-    """ Updates a City. Handles PUT method """
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'],
+                 strict_slashes=False)
+def amenity_put(amenity_id=None):
+    """ Updates a Amenity. Handles PUT method """
 
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
 
-    obj = storage.get("City", city_id)
+    obj = storage.get("City", amenity_id)
     if obj is None:
         abort(404)
 
