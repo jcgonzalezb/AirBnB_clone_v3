@@ -3,8 +3,9 @@
 View for States that handles all RESTful API actions
 """
 from models import storage
-from flask import jsonify
+from flask import jsonify, abort, request
 from api.v1.views import app_views
+from models.state import State
 
 
 @app_views.route('/states',methods=['GET'], strict_slashes=False)
@@ -33,7 +34,7 @@ def delete_state(state_id=None):
     if states is None:
         abort(404)
     else:
-        storage.delete(obj)
+        storage.delete(states)
         storage.save()
         return jsonify({}), 200
 
