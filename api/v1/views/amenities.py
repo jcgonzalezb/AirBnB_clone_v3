@@ -68,7 +68,7 @@ def amenity_put(amenity_id=None):
     if data is None:
         abort(400, "Not a JSON")
 
-    obj = storage.get("City", amenity_id)
+    obj = storage.get("Amenity", amenity_id)
     if obj is None:
         abort(404)
 
