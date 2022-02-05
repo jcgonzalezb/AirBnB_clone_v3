@@ -43,14 +43,14 @@ def delete_user(user_id=None):
 
 
 @app_views.route('/user', methods=['POST'], strict_slashes=False)
-def user_post():
-    """Create post"""
-    data = request.get_json()
+def create_user():
+    """Creates a user """
+    data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
-    elif 'email' not in data.keys():
+    elif 'email' not in data:
         abort(400, "Missing email")
-    elif 'password' not in data.keys():
+    elif 'password' not in data:
         abort(400, "Missing password")
     else:
         new_user = User(**data)
@@ -61,17 +61,19 @@ def user_post():
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def user_put(user_id):
-    """ handles PUT method """
-    user = storage.get("User", user_id)
-    if user is None:
-        abort(404)
-    data = request.get_json()
+    """ Updates a User. Handles PUT method """
+    data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
-    for key, value in data.items():
-        ignore_keys = ["id", "email", "created_at", "updated_at"]
-        if key not in ignore_keys:
-            user.bm_update(key, value)
-    user.save()
-    user = user.to_json()
-    return jsonify(user), 200
+
+    obj = storage.get("User", user_id)
+    if obj is None:
+        abort(404)
+
+    obj.email = data['email']
+    obj.password = data['password']
+    obj.first_name = data['first_name']
+    obj.last_name = data['last_name']
+    storage.save()
+    res = obj.to_dict()
+    return jsonify(res), 200
