@@ -43,6 +43,19 @@ def places_get(places_id):
     return jsonify(place)
 
 
+@app_views.route('/places/<place_id>', methods=['DELETE'],
+                 strict_slashes=False)
+def delete_place(place_id=None):
+    """Deletes a place"""
+    places = storage.get("Place", place_id)
+    if places is None:
+        abort(404)
+    else:
+        storage.delete(places)
+        storage.save()
+        return jsonify({}), 200
+
+
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
 def create_places(city_id):
