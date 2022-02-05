@@ -8,17 +8,6 @@ from api.v1.views import app_views
 from models.place import Place
 
 
-@app_views.route('/places', methods=['GET'], strict_slashes=False)
-def list_places():
-    """ Retrieves a list of all places object"""
-    places_all = []
-    places = storage.all("Place").values()
-    for place in places:
-        places_all.append(place.to_dict())
-
-    return jsonify(places_all)
-
-
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
 def all_places(city_id):
@@ -33,10 +22,10 @@ def all_places(city_id):
     return jsonify(places_all)
 
 
-@app_views.route('/places/<places_id>',  methods=['GET'], strict_slashes=False)
-def places_get(places_id):
+@app_views.route('/places/<place_id>',  methods=['GET'], strict_slashes=False)
+def places_get(place_id):
     """ Handles GET method """
-    place = storage.get("Place", places_id)
+    place = storage.get("Place", place_id)
     if place is None:
         abort(404)
     place = place.to_dict()
