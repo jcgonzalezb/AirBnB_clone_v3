@@ -5,7 +5,7 @@ View for Places that handles all RESTful API actions
 from models import storage
 from flask import jsonify, abort, request
 from api.v1.views import app_views
-from models.place import Places
+from models.place import Place
 
 
 @app_views.route('/places', methods=['GET'], strict_slashes=False)
@@ -13,7 +13,7 @@ def list_places():
     """ Retrieves a list of all places object"""
     places_all = []
     places = storage.all("Place").values()
-    for place in placess:
+    for place in places:
         places_all.append(place.to_dict())
 
     return jsonify(places_all)
@@ -28,13 +28,13 @@ def all_places(city_id):
     places_all = []
     places = storage.get("Place").values()
     for place in places:
-        if place.city_id == city_id
+        if place.city_id == city_id:
             places_all.append(place.to_dict())
     
     return jsonify(places_all)
 
-@app_views.route('/places/<places_id>>',  methods=['GET'], strict_slashes=False)
-def places_get(state_id):
+@app_views.route('/places/<places_id>',  methods=['GET'], strict_slashes=False)
+def places_get(place_id):
     """ Handles GET method """
     place = storage.get("Place", place_id)
     if place is None:
@@ -79,7 +79,7 @@ def place_put(place_id):
         if key in ignore_keys:
             pass
         else:
-            setattr(pace, key, values)
+            setattr(place, key, value)
     storage.save()
     dic_place = place.to_dict()
     return jsonify(dic_place), 200
