@@ -17,8 +17,8 @@ def list_users():
 
     return jsonify(users_all)
 
-@app_views.route('/users/<user_id>>',  methods=['GET'], strict_slashes=False)
-def user_get(state_id):
+@app_views.route('/users/<user_id>',  methods=['GET'], strict_slashes=False)
+def user_get(user_id):
     """ Handles GET method """
     user = storage.get("User", user_id)
     if user is None:
@@ -28,7 +28,7 @@ def user_get(state_id):
 
 @app_views.route('/users/<user_id>', methods=['DELETE'],
                  strict_slashes=False)
-def delete_user(state_id=None):
+def delete_user(user_id=None):
     """Deletes a user"""
     users = storage.get("User", user_id)
     if users is None:
@@ -44,12 +44,12 @@ def user_post():
     data = request.get_json()
     if data is None:
         abort(400, "Not a JSON")
-    elif 'email' not in data.keys()
+    elif 'email' not in data.keys():
         abort(400, "Missing email")
-    elif 'password' not in data.keys()
+    elif 'password' not in data.keys():
         abort(400, "Missing password")    
-        else:
-        new_user = Users(**data)
+    else:
+        new_user = User(**data)
         storage.new(new_user)
         new_user.save()
         return jsonify(new_user.to_dict()), 201        
