@@ -26,8 +26,8 @@ def all_places(city_id):
     if city is None:
         abort(400)
     places_all = []
-    places = storage.get("Place").values()
-    for place in places:
+    places = storage.get("Place")
+    for place in city.places:
         if place.city_id == city_id:
             places_all.append(place.to_dict())
     
