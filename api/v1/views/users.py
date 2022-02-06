@@ -70,7 +70,6 @@ def user_put(user_id):
     if obj is None:
         abort(404)
 
-    obj.email = data['email']
     obj.password = data['password']
     obj.first_name = data['first_name']
     obj.last_name = data['last_name']
