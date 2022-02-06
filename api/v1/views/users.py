@@ -62,17 +62,16 @@ def create_user():
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def user_put(user_id):
     """ Updates a User. Handles PUT method """
-    data = request.get_json(silent=True)
+    user = storage.get("User", user_id)
+    if user is None:
+        abort(404)
+    data = request.get_json()
     if data is None:
         abort(400, "Not a JSON")
-
-    obj = storage.get("User", user_id)
-    if obj is None:
-        abort(404)
-
-    obj.password = data['password']
-    obj.first_name = data['first_name']
-    obj.last_name = data['last_name']
+    for key, value in data.items():
+        ignore_keys = ["id", "email", "created_at", "updated_at"]
+        if key not in ignore_keys:
+            user.bm_update(key, value)
     storage.save()
-    res = obj.to_dict()
+    res = user.to_dict()
     return jsonify(res), 200
