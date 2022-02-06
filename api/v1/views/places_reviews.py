@@ -48,32 +48,32 @@ def delete_review(review_id=None):
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
-def create_city(state_id):
-    """ Creates a city. Handles POST method """
+def create_review(place_id):
+    """ Creates a review. Handles POST method """
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
     elif 'name' not in data:
         abort(400, "Missing name")
     else:
-        state = storage.get("State", state_id)
-        if state is None:
+        place = storage.get("Place", place_id)
+        if place is None:
             abort(404)
-        data['state_id'] = state_id
-        new_city = City(**data)
-        new_city.save()
-        return jsonify(new_city.to_dict()), 201
+        data['place_id)'] = place_id
+        new_review = Review(**data)
+        new_review.save()
+        return jsonify(new_review.to_dict()), 201
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def city_put(city_id=None):
-    """ Updates a City. Handles PUT method """
+@app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
+def review_put(review_id=None):
+    """ Updates a review. Handles PUT method """
 
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
 
-    obj = storage.get("City", city_id)
+    obj = storage.get("Review", review_id)
     if obj is None:
         abort(404)
 
