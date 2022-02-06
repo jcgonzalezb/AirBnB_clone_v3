@@ -77,6 +77,5 @@ def user_put(user_id):
             pass
         else:
             setattr(obj, key, data[key])
-    storage.save()
     res = obj.to_dict()
     return jsonify(res), 200
