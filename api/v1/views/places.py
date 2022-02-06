@@ -15,7 +15,7 @@ def all_places(city_id):
     """ returns list of all Place objects linked to a given City """
     city = storage.get("City", city_id)
     if city is None:
-        abort(400)
+        abort(404)
     places_all = []
     for place in city.places:
         if place.city_id == city_id:
@@ -25,7 +25,7 @@ def all_places(city_id):
 
 @app_views.route('/places/<place_id>',  methods=['GET'], strict_slashes=False)
 def places_get(place_id):
-    """ Handles GET method """
+    """ Return the place and it ID. Handles GET method """
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
