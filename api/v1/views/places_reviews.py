@@ -5,8 +5,6 @@ View for Review that handles all RESTful API actions
 from models import storage
 from flask import jsonify, abort, request
 from api.v1.views import app_views
-from models.user import User
-from models.place import Place
 from models.review import Review
 
 
@@ -65,7 +63,7 @@ def create_review(place_id):
         abort(404)
     if 'text' not in data:
         abort(400, "Missing text")
-    data['place_id)'] = place_id
+    data['place_id'] = place_id
     review = Review(**data)
     review.save()
     review = review.to_dict()
