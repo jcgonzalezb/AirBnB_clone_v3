@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """
-View for City that handles all RESTful API actions
+View for Review that handles all RESTful API actions
 """
-from models import city, storage
+from models import storage
 from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models.review import Review
@@ -50,24 +50,24 @@ def delete_review(review_id=None):
                  strict_slashes=False)
 def create_review(place_id):
     """ Creates a review. Handles POST method """
-    data = request.get_json(silent=True)
     place = storage.get("Place", place_id)
-    user = storage.get("User", data['user_id'])
     if place is None:
         abort(404)
-    elif data is None:
+    data = request.get_json(silent=True)
+    if data is None:
         abort(400, "Not a JSON")
-    elif 'user_id' not in data:
+    if 'user_id' not in data:
         abort(400, "Missing user_id")
-    elif user is None:
+    user = storage.get("User", data['user_id'])
+    if user is None:
         abort(404)
-    elif 'text' not in data:
+    if 'text' not in data:
         abort(400, "Missing text")
-    else:
-        data['place_id)'] = place_id
-        new_review = Review(**data)
-        new_review.save()
-        return jsonify(new_review.to_dict()), 201
+    data['place_id)'] = place_id
+    review = Review(**data)
+    review.save()
+    review = review.to_dict()
+    return jsonify(review), 201
 
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
@@ -79,7 +79,6 @@ def review_put(review_id=None):
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
-
     for key, value in data.items():
         ignore_keys = ["id", "user_id", "city_id", "created_at", "updated_at"]
         if key in ignore_keys:
