@@ -51,14 +51,19 @@ def delete_review(review_id=None):
 def create_review(place_id):
     """ Creates a review. Handles POST method """
     data = request.get_json(silent=True)
-    if data is None:
+    place = storage.get("Place", place_id)
+    user = storage.get("User", data['user_id'])
+    if place is None:
+        abort(404)
+    elif data is None:
         abort(400, "Not a JSON")
-    elif 'name' not in data:
-        abort(400, "Missing name")
+    elif 'user_id' not in data:
+        abort(400, "Missing user_id")
+    elif user is None:
+        abort(404)
+    elif 'text' not in data:
+        abort(400, "Missing text")
     else:
-        place = storage.get("Place", place_id)
-        if place is None:
-            abort(404)
         data['place_id)'] = place_id
         new_review = Review(**data)
         new_review.save()
