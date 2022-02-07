@@ -1,4 +1,4 @@
-# 0x05. AirBnB clone - RESTful API
+# AirBnB clone - RESTful API
 
 ## Learning Objectives
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
