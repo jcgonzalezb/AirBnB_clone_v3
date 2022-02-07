@@ -1,5 +1,9 @@
 # AirBnB clone - RESTful API
 
+## Description:
+
+In this repository are exposed all the objects stored via a JSON web interface and the user is able to manipulate the objects via a RESTful API. 
+
 ## Learning Objectives
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
 
