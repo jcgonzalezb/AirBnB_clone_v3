@@ -155,4 +155,17 @@ class TestFileStorage(unittest.TestCase):
 
         self.assertEqual(fStorage.get(State, state.id), state)
         self.assertIsNone(fStorage.get(City, 'TESTCity'))
-        self.assertIsNone(fS
+        self.assertIsNone(fStorage.get(State, '9543-qwer'))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """ Tests count method file storage """
+        dic = {"name": "Chapinero"}
+        state = State(**dic)
+        models.storage.new(state)
+        dic = {"name": "Houston", "state_id": state.id}
+        city = City(**dic)
+        models.storage.new(city)
+        models.storage.save()
+        count = models.storage.count()
+        self.assertEqual(len(models.storage.all()), count)
