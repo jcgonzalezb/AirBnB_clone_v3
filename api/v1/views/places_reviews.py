@@ -73,16 +73,19 @@ def create_review(place_id):
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
 def review_put(review_id=None):
     """ Updates a review. Handles PUT method """
-
+    review = storage.get("Review", review_id)
+    if review is None:
+        abort(404)
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
 
-    obj = storage.get("Review", review_id)
-    if obj is None:
-        abort(404)
-
-    obj.name = data['name']
+    for key, value in data.items():
+        ignore_keys = ["id", "user_id", "city_id", "created_at", "updated_at"]
+        if key in ignore_keys:
+            pass
+        else:
+            setattr(review, key, value)
     storage.save()
-    res = obj.to_dict()
-    return jsonify(res), 200
+    dic_review = review.to_dict()
+    return jsonify(dic_review), 200
