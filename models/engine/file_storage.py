@@ -92,5 +92,8 @@ class FileStorage:
         else:
             for val in self.__objects.values():
                 count += 1
+        
+        if cls is None:
+            count = 0
 
         return count
