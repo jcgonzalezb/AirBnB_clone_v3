@@ -3,13 +3,16 @@
 Script that starts a Flask web application
 """
 from flask import Flask, Response, jsonify
+from flask_cors import CORS
 from os import getenv
 from models import storage
 from api.v1.views import app_views
 
+
 app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 app.register_blueprint(app_views)
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
