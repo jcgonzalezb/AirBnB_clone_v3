@@ -134,6 +134,12 @@ class TestFileStorage(unittest.TestCase):
         get_instance = storage.get(State, instance.id)
         self.assertEqual(get_instance, instance)
 
+    def test_get_pace(self):
+        """... checks if get() function returns properly"""
+        duplicate = storage.get('Place', self.p1.id)
+        expected = self.p1.id
+        self.assertEqual(expected, duplicate.id)
+
     def test_count(self):
         """Test the count method of DBStorage"""
         count = models.storage.count("State")
