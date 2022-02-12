@@ -119,11 +119,14 @@ class TestFileStorage(unittest.TestCase):
         """Test get() method of DB storage"""
         state = State(name='TESTState2')
         state.save()
+        new_user = User(email="bob@foobar.com", password="password")
+        new_user.save()
         self.assertEqual(storage.get('State', state.id), state)
         self.assertIsNone(storage.get('State', '9543-qwer'))
         self.assertIsNone(storage.get(None, state.id))
         self.assertIs(state, models.storage.get("State", state.id))
         self.assertIsNone(models.storage.get("State", "0"))
+        self.assertIs(new_user, models.storage.get("User", new_user.id))
 
     def test_get_db(self):
         """ Tests method for obtaining an instance db storage"""
