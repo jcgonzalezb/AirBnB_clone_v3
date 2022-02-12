@@ -127,9 +127,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertIs(state, models.storage.get("State", state.id))
         self.assertIsNone(models.storage.get("State", "0"))
         self.assertIs(new_user, models.storage.get("User", new_user.id))
-
-    def test_get_db(self):
-        """ Tests method for obtaining an instance db storage"""
         dic = {"name": "Texas"}
         instance = State(**dic)
         storage.new(instance)
