@@ -126,14 +126,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNone(storage.get(None, state.id))
         self.assertIs(state, models.storage.get("State", state.id))
         self.assertIsNone(models.storage.get("State", "0"))
-        self.assertIs(new_user, models.storage.get("User", new_user.id))
-        dic = {"name": "Texas"}
-        instance = State(**dic)
-        storage.new(instance)
-        storage.save()
-        get_instance = storage.get(State, instance.id)
-        self.assertEqual(get_instance, instance)
-
 
     def test_count(self):
         """Test the count method of DBStorage"""
